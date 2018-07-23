@@ -26,20 +26,19 @@
 import Foundation
 
 public extension Swifter {
-    
-    
+
     /**
      GET direct_messages/events/show
      
      Returns a single Direct Message event by the given id.
      */
     func getDirectMessage(for messageId: String,
-                          success: SuccessHandler? = nil,
+                          success: JSONSuccessHandler? = nil,
                           failure: FailureHandler? = nil) {
         let path = "direct_messages/events/show.json"
         let parameters = ["id": messageId]
-        self.getJSON(path: path, baseURL: .api, parameters: parameters, success: { json, _ in
-            success?(json)
+        self.getJSON(path: path, baseURL: .api, parameters: parameters, success: { json, resp in
+            success?(json, resp)
         }, failure: failure)
     }
     
@@ -50,14 +49,14 @@ public extension Swifter {
      */
     func getDirectMessages(count: Int? = nil,
                            cursor: String? = nil,
-                           success: SuccessHandler? = nil,
+                           success: JSONSuccessHandler? = nil,
                            failure: FailureHandler? = nil) {
         let path = "direct_messages/events/list.json"
         var parameters: [String: Any] = [:]
         parameters["count"] ??= count
         parameters["cursor"] ??= cursor
-        self.getJSON(path: path, baseURL: .api, parameters: parameters, success: { json, _ in
-            success?(json)
+        self.getJSON(path: path, baseURL: .api, parameters: parameters, success: { json, resp in
+            success?(json, resp)
         }, failure: failure)
     }
     
@@ -67,12 +66,12 @@ public extension Swifter {
      Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
      */
     func destroyDirectMessage(for messageId: String,
-                              success: SuccessHandler? = nil,
+                              success: JSONSuccessHandler? = nil,
                               failure: FailureHandler? = nil) {
         let path = "direct_messages/events/destroy.json"
         let parameters = ["id": messageId]
-        self.deleteJSON(path: path, baseURL: .api, parameters: parameters, success: { json, _ in
-            success?(json)
+        self.deleteJSON(path: path, baseURL: .api, parameters: parameters, success: { json, resp in
+            success?(json, resp)
         }, failure: failure)
     }
     
@@ -88,7 +87,7 @@ public extension Swifter {
      */
     func postDirectMessage(to recipientUserId: String,
                            message: String,
-                           success: SuccessHandler? = nil,
+                           success: JSONSuccessHandler? = nil,
                            failure: FailureHandler? = nil) {
         let path = "direct_messages/events/new.json"
         
@@ -104,9 +103,9 @@ public extension Swifter {
             ]
         ]
         
-        self.postJSON(path: path, baseURL: .api, parameters: parameters, success: { json, _ in
-            success?(json)
+        self.postJSON(path: path, baseURL: .api, parameters: parameters, success: { json, resp in
+            success?(json, resp)
         }, failure: failure)
     }
-    
+
 }
